@@ -1,196 +1,346 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Snake</title>
-  <style>
-    body {
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-      background-color: black;
-      background-image: url("https://gameranx.com/wp-content/uploads/2017/03/Snake-Pass-1080P-Wallpaper-2.jpg");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      word-wrap: wrap;
-      font-size: 4vw;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    #game-board {
-      display: none;
-      /* background-color: #CCC; */
-      width: 100vmin;
-      height: 100vmin;
-      /* display: grid; */
-      grid-template-rows: repeat(21, 1fr);
-      grid-template-columns: repeat(21, 1fr);
-      backdrop-filter: blur(20px);
-      box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.0.3);
-      border: 2px solid transparent;
-    }
-
-    .snake {
-      /* display: none; */
-      background-color: #300858;
-      border: .25vmin solid #5a189a;
-      border-radius: 50%;
-      box-shadow: 0px 0px 10px  3px #2e0755;
-    }
-/* #ff4d6d    #a70230 */
-    .food {
-      /* display: none; */
-      background-color: #e60303;
-      border: 1px solid transparent;
-      border-radius: 50%;
-      box-shadow: 0px 0px 10px  3px #d62828 ;
-    }
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
 
-    #container {
-      width: 80vw;
-      height: 80vh;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-   
-    }
-
-    button {
-      width: 30%;
-      margin: 20px;
-      padding: 0.75em 1em;
-     font-size: 1.5vw;
-      cursor: pointer;
-      position: relative;
-      color: #300858;
-      font-weight: bolder;
-      border-radius: 0.6em;
-      transition: all 0.2s ease-in-out;
-      overflow: hidden;
-    }
-      button:before {
-        content: "";
-        background-color: rgba(255, 255, 255, 0.315);
-        height: 100%;
-        width: 30em;
-        display: block;
-        position: absolute;
-        top: 0;
-        left: -4.5em;
-        transform: skewX(-45deg) translateX(0);
-        transition: none;
-}
-button:hover{
-  background-color: #2194E0;
-  color: #fff;
-  border-bottom: 4px solid darken(#2194E0, 10%);
-}
-  button:hover::before{
-    transform: skewX(-45deg) translateX(17.5em);
-        transition: all 0.8s ease-in-out;
-  }
-
-
-      .dropdown {
-        position: relative;
-        width: 34%;
-        /* margin: 20px; */
-        padding: 0px;
-  
-        cursor: pointer;
-        /* border: 2px solid rgb(65, 65, 65); */
-      }
-
-      .dropbtn {
-        width: 86%;
-        /* margin: 20px; */
-        padding: 0.75em 2em;
-
-        cursor: pointer;
-      }
-
-      .dropdown_content {
-        display: none;
-        position: absolute;
-        z-index: 1;
-
-  
-      }
-
-      .dropdown:hover .dropdown_content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: #fff;
-        border-radius: 0.6em;
-        padding: 10px;
-        margin: 0px;
-        width: 90%;
-      }
-
-      
-      .level {
-        width: 75%;
-        padding: 10px;
-        margin: 5px;
-        height: auto;
-       
-        cursor: pointer;
-      }
-
-
-      @media (max-width:930px){
-        button{
-          width: 40%;
-          font-size: 2.5vw;
+    <title>Snake</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+        #body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            background-color: black;
+            background-image: url("https://gameranx.com/wp-content/uploads/2017/03/Snake-Pass-1080P-Wallpaper-2.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            word-wrap: wrap;
+            font-size: 4vw;
+           
         }
-        .dropdown{
-          width: 46%;
-        }
-      }
-        @media (max-width:500px){
         
-        button{
-          width: 80%;
-    font-size: 4.5vw;
+        #game-board {
+            display: none;
+            /* background-color: #CCC; */
+            width: 100vmin;
+            height: 100vmin;
+            /* display: grid; */
+            grid-template-rows: repeat(21, 1fr);
+            grid-template-columns: repeat(21, 1fr);
+            backdrop-filter: blur(20px);
+            box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.0.3);
+            border: 2px solid transparent;
         }
-        .dropdown{
-          width: 90%;
+        
+        #refreshBtn {
+            display: none;
+            border-radius: 10px;
+            /* background-color: #fff; */
+             position: absolute;
+             width: auto;
+             /* height: 2rem; */
+             padding: 10px;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            background-color: #2194E0;
+            color: #fff;
+            /* border-bottom: 4px solid darken(#2194E0, 10%);
+            box-shadow: 0px 0px 10px 3px #2194E0; */
         }
-      }
+        
+        .snake {
+            /* display: none; */
+            background-color: #086400;
+            border: .25vmin solid #086400;
+            border-radius: 50%;
+            box-shadow: 0px 0px 10px 3px #086400;
+        }
+        /* #ff4d6d    #a70230 */
+        
+        .food {
+            /* display: none; */
+            background-color: #e60303;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            box-shadow: 0px 0px 10px 3px #d62828;
+        }
+        
+        #container {
+            width: 80vw;
+            height: 80vh;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        button {
+            width: 30%;
+            margin: 20px;
+            padding: 0.75em 1em;
+            font-size: 1.5vw;
+            cursor: pointer;
+            position: relative;
+            color: #300858;
+            font-weight: bolder;
+            font-family: "Poppins", sans-serif;
+          
+            border-radius: 0.6em;
+            transition: all 0.2s ease-in-out;
+            overflow: hidden;
+        }
+        
+        button:before {
+            content: "";
+            background-color: rgba(255, 255, 255, 0.315);
+            height: 100%;
+            width: 30em;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -4.5em;
+            transform: skewX(-45deg) translateX(0);
+            transition: none;
+        }
+        
+        button:hover {
+            background-color: #2194E0;
+            color: #fff;
+            border-bottom: 4px solid darken(#2194E0, 10%);
+        }
+        
+        button:hover::before {
+            transform: skewX(-45deg) translateX(17.5em);
+            transition: all 0.8s ease-in-out;
+        }
+        
+        .dropdown {
+            position: relative;
+            width: 34%;
+            /* margin: 20px; */
+            padding: 0px;
+            cursor: pointer;
+            /* border: 2px solid rgb(65, 65, 65); */
+        }
+        
+        .dropbtn {
+            width: 86%;
+            /* margin: 20px; */
+            padding: 0.75em 2em;
+            cursor: pointer;
+        }
+        
+        .dropdown_content {
+            display: none;
+            position: absolute;
+            z-index: 1;
+        }
+        
+        .dropdown:hover .dropdown_content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            border-radius: 0.6em;
+            padding: 10px;
+            margin: 0px;
+            width: 90%;
+        }
+        
+        .level {
+            width: 75%;
+            padding: 10px;
+            margin: 5px;
+            height: auto;
+            cursor: pointer;
+        }
+        
+        #popWindow {
+            display: none;
+            margin: 0;
+            padding: 0;
+            /* display: flex;
+    align-items: center;
+    justify-content: center; */
+            width: 100vw;
+            height: 100vh;
+            background-image: url("https://gameranx.com/wp-content/uploads/2017/03/Snake-Pass-1080P-Wallpaper-2.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            filter: blur(15px);
+        }
+        
+        #popUp {
+            position: absolute;
+            top: 30%;
+            /* left: 40%; */
+            padding: 20px;
+            margin: auto;
+            /* display: flex; */
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: auto;
+            height: 15rem;
+            background-color: transparent;
+            background-image: linear-gradient(to right bottom, #0668aa, #2194E0, #52b9fd);
+            box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.0.3);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            color: black;
+            z-index: 99;
+            font-size: 30px;
+            font-family: 'Rubik Beastly', cursive;
+        }
 
-  </style>
-  <script src="game.js" defer type="module"></script>
+        #ok{
+            width: 6rem;
+            height: auto;
+            padding: 15px;
+
+        }
+
+        #help{
+            position: absolute;
+            top: 30%;
+            /* left: 40%; */
+            padding: 20px;
+            margin: auto;
+            /* display: flex; */
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+            width: auto;
+            height: 15rem;
+            background-color: transparent;
+            background-image: linear-gradient(to right bottom, #0668aa, #2194E0, #52b9fd);
+            box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.0.3);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            color: #fff;
+            z-index: 99;
+            font-size: 20px;
+            font-family: "Poppins", sans-serif;
+        }
+        .instruction{
+            text-align: center;
+            color: #fff;
+        }
+        #back{
+            margin: 0;
+            width: auto;
+            height: auto;
+            padding: 5px;
+            display: inline;
+        }
+        
+        @media (max-width:930px) {
+            button {
+                width: 40%;
+                font-size: 2.5vw;
+            }
+            #popWindow{
+                background-image: url("https://images6.alphacoders.com/312/312932.jpg");
+            }
+            .dropdown {
+                width: 46%;
+            }
+            #refreshBtn{
+display: none;
+            }
+            #body{
+                width: 100vw;
+                margin: auto;
+    
+                background-image: url("https://images6.alphacoders.com/312/312932.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            }
+        }
+        
+        @media (max-width:500px) {
+            button {
+                width: 80%;
+                font-size: 4.5vw;
+            }
+            .dropdown {
+                width: 90%;
+            }
+            #popUp{
+                font-size: 20px;
+            }
+            #refreshBtn{
+display: none;
+            }
+            #help{
+                height: 13rem;
+                font-size:15px;
+            }
+        }
+    </style>
+    <script src="game.js" defer type="module"></script>
 </head>
 
 
 
-<body>
+<body id="body">
 
-  <div id="container">
-    <button id="startBtn" class="button">New Game</button>
-    <div class="dropdown">
-      <button class="dropbtn">Select Level</button>
-      <div class="dropdown_content">
-        <button class="level" id="easy_level">Easy</button>
-        <button class="level" id="medium_level">Medium</button>
-        <button class="level" id="hard_level">Hard</button>
-      </div>
+    <div id="container">
+        <button id="startBtn" class="button">New Game</button>
+        <div class="dropdown">
+            <button class="dropbtn">Select Level</button>
+            <div class="dropdown_content">
+                <button class="level" id="easy_level">Easy</button>
+                <button class="level" id="medium_level">Medium</button>
+                <button class="level" id="hard_level">Hard</button>
+            </div>
+        </div>
+        <button class="button" id="helpBtn">Help</button>
     </div>
-    <button class="button">Help</button>
-  </div>
+    <div>
+        <button id="refreshBtn">&larr;</button>
+        <div id="game-board"></div>
+    </div>
 
-  <div id="game-board"></div>
+    <div id="popWindow"></div>
+    <div id="popUp">
+        <h2>Let's have another Try</h2>
+        <button id="ok">ok</button>
+    </div>
+
+
+    <div id="help">
+        <button id="back" >X</button>
+        <h2 class="instruction">Instructions</h2>
+    <ul>
+        <li> Press 'Upkey' to move upward</li>
+        <li> Press  'Downkey' to move downward</li>
+        <li> Press 'Rightkey' to move right side</li>
+        <li> Press 'Leftkey' to move left side</li>
+    </ul>
+    </div>
+
 </body>
 
 </html>
