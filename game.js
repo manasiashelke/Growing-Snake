@@ -1,126 +1,145 @@
-import { update as updateSnake, draw as drawSnake, SNAKE_SPEED, getSnakeHead, snakeIntersection } from './snake.js'
+import { update as updateSnake, draw as drawSnake, getSnakeHead, snakeIntersection } from './snake.js'
 import { update as updateFood, draw as drawFood } from './food.js'
 import { outsideGrid } from './grid.js'
 
 
+const body = document.getElementById("body")
+const gameBoard = document.getElementById('game-board')
+const container = document.getElementById("container")
+const startBtn = document.getElementById("startBtn")
+const dropbtn = document.getElementsByClassName("dropbtn")
+const refreshBtn = document.getElementById("refreshBtn")
+const dropdown_content = document.querySelector('.dropdown_content');
+const easy_level = document.getElementById("easy_level")
+const medium_level = document.getElementById("medium_level")
+const hard_level = document.getElementById("hard_level");
+const popWindow = document.getElementById("popWindow")
+const popUp = document.getElementById("popUp")
+const ok = document.getElementById("ok")
+const helpBtn = document.getElementById("helpBtn")
+const help = document.getElementById("help")
+const back = document.getElementById("back")
+
 let lastRenderTime = 0
 let gameOver = false
+let SNAKE_SPEED;
 
-const gameBoard = document.getElementById('game-board')
+
 
 function main(currentTime) {
-  if (gameOver) {
-    if (confirm('You lost. Press ok to restart.')) {
-      window.location = 'index.html'
+    if (gameOver) {
+        popUp.style.display = "flex"
+        popWindow.style.display = "block"
+        gameBoard.style.display = "none"
+        refreshBtn.style.display = "none"
+            // if (confirm('You lost. Press ok to restart.')) {
+            //   window.location = 'index.html'
+            // }
+        return
     }
-    return
-  }
 
 
-  window.requestAnimationFrame(main)
-  const secondsSinceLastRender = (currentTime - lastRenderTime) / 1000
-  if (secondsSinceLastRender < 1 / SNAKE_SPEED) return
+    window.requestAnimationFrame(main)
+    const secondsSinceLastRender = (currentTime - lastRenderTime) / 1000
+    if (secondsSinceLastRender < 1 / SNAKE_SPEED) return
 
 
-  lastRenderTime = currentTime
+    lastRenderTime = currentTime
 
-  update()
-  draw()
+    update()
+    draw()
 }
 
 window.requestAnimationFrame(main)
 
 function update() {
-  updateSnake()
-  updateFood()
-  checkDeath()
+    updateSnake()
+    updateFood()
+    checkDeath()
 }
 
 function draw() {
-  gameBoard.innerHTML = ''
-  drawSnake(gameBoard)
-  drawFood(gameBoard)
+    gameBoard.innerHTML = ''
+    drawSnake(gameBoard)
+    drawFood(gameBoard)
 }
 
 function checkDeath() {
-  gameOver = outsideGrid(getSnakeHead()) || snakeIntersection()
+    gameOver = outsideGrid(getSnakeHead()) || snakeIntersection()
 }
 
 
-const container = document.getElementById("container")
-const startBtn = document.getElementById("startBtn")
-const dropbtn = document.getElementsByClassName("dropbtn")
-const dropdown_content = document.querySelector('.dropdown_content');
-const easy_level = document.getElementById("easy_level")
-const medium_level = document.getElementById("medium_level")
-const hard_level = document.getElementById("hard_level");
-
-
-
-
-
-startBtn.addEventListener('click', function(){ 
-  // console.log(container)
-gameBoard.style.display ="grid"
-gameBoard.style.backgroundColor ="rgba(255, 255, 255,0.1)"
-
-
-container.style.display ="none"
-
-
-snake_speed()
-
-
+startBtn.addEventListener('click', function() {
+    gameBoard.style.display = "grid"
+    gameBoard.style.backgroundColor = "rgba(255, 255, 255,0.2)"
+    container.style.display = "none"
+    refreshBtn.style.display = "inline-block"
 })
 
-export function snake_speed(){
-  const dropdown_content = document.querySelector('.dropdown_content');
-  // if(  dropdown_content.previousElementSibling.textContent == "Select Level"){
-    // console.log(dropdown_content.previousElementSibling.textContent)
-  //   return 4;
-  // }
-  if(  dropdown_content.previousElementSibling.textContent == "Easy"){
-    console.log(dropdown_content.previousElementSibling.textContent)
-    return 3;
-  }
-  
-  // if(dropdown_content.previousElementSibling.textContent == "Medium"){
-  //   console.log(dropdown_content.previousElementSibling.textContent)
-  //   return 5;
-  // }
-  // if( dropdown_content.previousElementSibling.textContent == "Hard"){
-  //   console.log(dropdown_content.previousElementSibling.textContent)
-  //   return 8;
-  // }
+refreshBtn.addEventListener('click', function() {
+    window.location = 'index.html'
+})
+
+
+
+ok.addEventListener('click', function() {
+    window.location = 'index.html'
+})
+
+startBtn.addEventListener('click', speed)
+
+function speed() {
+    const dropdown_content = document.querySelector('.dropdown_content');
+    if (dropdown_content.previousElementSibling.textContent == "Select Level") {
+        console.log(dropdown_content.previousElementSibling.textContent)
+        SNAKE_SPEED = 4;
+    }
+    if (dropdown_content.previousElementSibling.textContent == "Easy") {
+        console.log(dropdown_content.previousElementSibling.textContent)
+        SNAKE_SPEED = 3;
+    }
+
+    if (dropdown_content.previousElementSibling.textContent == "Medium") {
+        console.log(dropdown_content.previousElementSibling.textContent)
+        SNAKE_SPEED = 5;
+    }
+    if (dropdown_content.previousElementSibling.textContent == "Hard") {
+        console.log(dropdown_content.previousElementSibling.textContent)
+        SNAKE_SPEED = 8;
+    }
+
 }
 
 
 
-easy_level.addEventListener('click', function(){
-  // console.log(easy_level.textContent)
-  // console.log(dropdown_content.previousElementSibling.textContent)
-  dropdown_content.previousElementSibling.textContent =easy_level.textContent
-  // console.log(dropdown_content.previousElementSibling.textContent)
-  // dropdown_content.style.display="none";
-// var flag = 1
+easy_level.addEventListener('click', function() {
+
+    dropdown_content.previousElementSibling.textContent = easy_level.textContent
+        // dropdown_content.style.display="none";
+
 })
 
 
-medium_level.addEventListener('click', function(){
-  // console.log(medium_level.textContent)
-  // console.log(dropdown_content.previousElementSibling.textContent)
-  dropdown_content.previousElementSibling.textContent =medium_level.textContent
-  
-  // dropdown_content.style.display="none";
-// var flag = 2
+medium_level.addEventListener('click', function() {
+
+    dropdown_content.previousElementSibling.textContent = medium_level.textContent
+        // dropdown_content.style.display="none";
+
 })
 
 
-hard_level.addEventListener('click', function(){
-  // console.log(hard_level.textContent)
-  // console.log(dropdown_content.previousElementSibling.textContent)
-  dropdown_content.previousElementSibling.textContent =hard_level.textContent
-  // dropdown_content.style.display="none";
-  // var flag=3
+hard_level.addEventListener('click', function() {
+
+    dropdown_content.previousElementSibling.textContent = hard_level.textContent
+        // dropdown_content.style.display="none";
+
 })
+
+helpBtn.addEventListener('click', function(){
+help.style.display = "block"
+})
+
+back.addEventListener('click', function(){
+    help.style.display = "none"
+    })
 
