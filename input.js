@@ -1,5 +1,8 @@
 let inputDirection = { x: 0, y: 0 }
 let lastInputDirection = { x: 0, y: 0 }
+let width = window.innerWidth;
+// let height = window.innerHeight;
+console.log(width)
 
 window.addEventListener('keydown', e => {
   switch (e.key) {
@@ -21,6 +24,17 @@ window.addEventListener('keydown', e => {
       break
   }
 })
+
+
+// if(width == 1000){
+//   $(document).on("pagecreate","#pageone",function(){
+//     $("gameboard").on("swiperight",function(){
+//       alert("You swiped left!");
+//     });                       
+//   });
+// }
+
+
 
 export function getInputDirection() {
   lastInputDirection = inputDirection
